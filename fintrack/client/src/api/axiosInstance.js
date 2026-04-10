@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+const isProduction = import.meta.env.PROD;
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
+    baseURL: import.meta.env.VITE_API_BASE_URL || (isProduction ? '/api' : 'http://localhost:5000/api'),
 });
 
 // Request interceptor to add the JWT token to headers
