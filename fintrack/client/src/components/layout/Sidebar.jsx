@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { LayoutDashboard, Receipt, Target, ShieldUser } from 'lucide-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { LayoutDashboard, Receipt, Target, ShieldUser, LogOut } from 'lucide-react';
+import { logout } from '../../features/auth/authSlice';
 
 const Sidebar = () => {
     const location = useLocation();
     const { role } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     const navLinks = [
         { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
@@ -46,6 +48,16 @@ const Sidebar = () => {
                     )
                 })}
             </nav>
+
+            <div className="p-4 border-t border-border">
+                <button
+                    onClick={() => dispatch(logout())}
+                    className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:text-red-400 hover:bg-red-500/10 transition duration-200"
+                >
+                    <LogOut className="w-5 h-5" />
+                    <span className="font-medium">Logout</span>
+                </button>
+            </div>
         </aside>
     );
 };
