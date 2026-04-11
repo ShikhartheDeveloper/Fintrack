@@ -22,6 +22,7 @@ import Navbar from '../components/layout/Navbar';
 import hero3d from '../assets/hero_3d.png';
 import analytics3d from '../assets/analytics_3d.png';
 import security3d from '../assets/security_3d.png';
+import goals3d from '../assets/goals_3d.png';
 
 /* ─── Privacy Modal ─────────────────────────────────────────── */
 const PrivacyModal = ({ onClose }) => (
@@ -193,14 +194,23 @@ const FeatureCard = ({ feature, idx }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
-      className="glass-card p-8 rounded-[2rem] group relative overflow-hidden"
+      className="glass-card p-8 rounded-[2.5rem] group relative overflow-hidden h-full flex flex-col"
     >
-      <div style={{ transform: 'translateZ(50px)' }} className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-        <feature.icon className={`w-7 h-7 ${feature.color}`} />
+      <div style={{ transform: 'translateZ(60px)' }} className="relative mb-8 aspect-square w-full max-w-[160px] mx-auto group-hover:scale-110 transition-transform duration-500">
+        <div className={`absolute inset-0 ${feature.bg} blur-3xl opacity-20 rounded-full`} />
+        {feature.image ? (
+          <img src={feature.image} alt={feature.title} className="w-full h-full object-contain relative z-10" />
+        ) : (
+          <div className={`w-full h-full rounded-2xl ${feature.bg} flex items-center justify-center`}>
+            <feature.icon className={`w-10 h-10 ${feature.color}`} />
+          </div>
+        )}
       </div>
-      <h3 style={{ transform: 'translateZ(40px)' }} className="text-xl font-bold mb-4">{feature.title}</h3>
-      <p style={{ transform: 'translateZ(30px)' }} className="text-gray-400 leading-relaxed text-sm">{feature.description}</p>
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
+      <div style={{ transform: 'translateZ(40px)' }} className="mt-auto">
+        <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+        <p className="text-gray-400 leading-relaxed text-sm">{feature.description}</p>
+      </div>
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
     </motion.div>
   );
 };
@@ -230,10 +240,10 @@ const LandingPage = () => {
   };
 
   const features = [
-    { title: 'Smart Budgeting',    description: 'AI-powered insights that categorize your spending and suggest optimizations automatically.', icon: Zap,        color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-    { title: 'Goal Tracking',      description: 'Visualize your path to financial freedom with dynamic progress bars and milestone alerts.',  icon: Target,     color: 'text-primary',    bg: 'bg-primary/10'     },
-    { title: 'Advanced Security',  description: 'Bank-grade encryption ensures your sensitive financial data stays private and protected.',    icon: ShieldCheck,color: 'text-green-400',  bg: 'bg-green-400/10'  },
-    { title: 'Real-time Analytics',description: 'Interactive charts and graphs provide a birds-eye view of your entire financial ecosystem.', icon: PieChart,   color: 'text-purple-400', bg: 'bg-purple-400/10'  },
+    { title: 'Smart Budgeting',    description: 'AI-powered insights that categorize your spending and suggest optimizations automatically.', icon: Zap,        color: 'text-yellow-400', bg: 'bg-yellow-400/10', image: hero3d      },
+    { title: 'Goal Tracking',      description: 'Visualize your path to financial freedom with dynamic progress bars and milestone alerts.',  icon: Target,     color: 'text-primary',    bg: 'bg-primary/10',    image: goals3d     },
+    { title: 'Advanced Security',  description: 'Bank-grade encryption ensures your sensitive financial data stays private and protected.',    icon: ShieldCheck,color: 'text-green-400',  bg: 'bg-green-400/10',  image: security3d  },
+    { title: 'Real-time Analytics',description: 'Interactive charts and graphs provide a birds-eye view of your entire financial ecosystem.', icon: PieChart,   color: 'text-purple-400', bg: 'bg-purple-400/10', image: analytics3d },
   ];
 
   return (
@@ -642,6 +652,77 @@ const LandingPage = () => {
                 ))}
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Vision Showcase Section ───────────────────────────── */}
+      <section className="py-32 lg:py-48 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[160px]" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-24">
+            <motion.p
+              initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+              className="text-xs font-mono text-primary tracking-[0.5em] uppercase mb-4"
+            >
+              The Design Philosophy
+            </motion.p>
+            <h2 className="text-4xl md:text-6xl font-black mb-8">
+              Engineered for <br /><span className="text-gradient">Elegance and Power.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Classy Masonry-like Showcase */}
+            <div className="lg:col-span-7 grid grid-cols-2 gap-6 h-[600px]">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
+                className="col-span-1 row-span-2 glass-card rounded-[3rem] overflow-hidden group relative"
+              >
+                <img src={hero3d} className="w-full h-full object-cover scale-110 group-hover:scale-125 transition-transform duration-700 opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-bg via-transparent to-transparent" />
+                <div className="absolute bottom-10 left-10">
+                  <p className="text-lg font-bold">Fluid Intelligence</p>
+                  <p className="text-xs text-gray-400 uppercase tracking-widest">Core Engine</p>
+                </div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+                className="col-span-1 glass-card rounded-[3rem] overflow-hidden group"
+              >
+                <img src={analytics3d} className="w-full h-full object-cover group-hover:rotate-6 transition-transform duration-700" />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+                className="col-span-1 glass-card rounded-[3rem] overflow-hidden group relative"
+              >
+                <img src={security3d} className="w-full h-full object-cover scale-150 group-hover:scale-100 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-green-500/10" />
+              </motion.div>
+            </div>
+
+            <div className="lg:col-span-5 space-y-12">
+              {[
+                { label: 'Crafted with Precision', desc: 'Every component is built using high-performance primitives for ultimate speed and reliability.' },
+                { label: 'Unmatched Aesthetic', desc: 'Inspired by futurism, FinTrack sets a new gold standard for financial management interfaces.' },
+                { label: 'Seamless Intelligence', desc: 'Integrated AI that feels like an extension of your own intuition, not an afterthought.' }
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, x: 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="relative pl-8 border-l border-primary/20"
+                >
+                  <div className="absolute left-[-5px] top-0 w-[10px] h-[10px] bg-primary rounded-full shadow-[0_0_15px_rgba(99,102,241,1)]" />
+                  <h4 className="text-xl font-bold mb-2">{item.label}</h4>
+                  <p className="text-gray-500 leading-relaxed text-sm">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
