@@ -19,6 +19,9 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
+import hero3d from '../assets/hero_3d.png';
+import analytics3d from '../assets/analytics_3d.png';
+import security3d from '../assets/security_3d.png';
 
 /* ─── Privacy Modal ─────────────────────────────────────────── */
 const PrivacyModal = ({ onClose }) => (
@@ -266,7 +269,8 @@ const LandingPage = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-left max-w-4xl mx-auto lg:mx-0">
 
             {/* Badge */}
             <motion.div
@@ -319,19 +323,49 @@ const LandingPage = () => {
             {/* Tech Tags */}
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-              className="mt-20 pt-10 border-t border-white/5 opacity-50"
+              className="mt-12 flex flex-wrap justify-start items-center gap-8 text-[10px] font-mono tracking-[0.3em] text-gray-500"
             >
-              <div className="flex flex-wrap justify-center items-center gap-12 text-xs font-mono tracking-[0.5em] text-gray-400">
-                <span>ENCRYPTED</span>
-                <div className="w-1 h-1 rounded-full bg-white/20" />
-                <span>DECENTRALIZED</span>
-                <div className="w-1 h-1 rounded-full bg-white/20" />
-                <span>REALTIME</span>
-              </div>
+              <span>ENCRYPTED</span>
+              <div className="w-1 h-1 rounded-full bg-white/20" />
+              <span>DECENTRALIZED</span>
+              <div className="w-1 h-1 rounded-full bg-white/20" />
+              <span>REALTIME</span>
             </motion.div>
           </motion.div>
+
+          {/* Hero Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            className="hidden lg:block relative"
+          >
+            <motion.div
+              animate={{ 
+                y: [0, -20, 0],
+                rotateZ: [0, 2, 0]
+              }}
+              transition={{ 
+                duration: 6, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="relative z-10"
+            >
+              <img 
+                src={hero3d} 
+                alt="FinTrack Future" 
+                className="w-full h-auto drop-shadow-[0_0_50px_rgba(var(--color-primary),0.3)]"
+              />
+            </motion.div>
+            
+            {/* Decorative rings around image */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-primary/10 rounded-full -z-10 animate-ping opacity-20" style={{ animationDuration: '4s' }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border border-purple-500/5 rounded-full -z-10 animate-ping opacity-10" style={{ animationDuration: '6s' }} />
+          </motion.div>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* ── Features / Core Modules ──────────────────────────── */}
       <section ref={featuresRef} id="features" className="py-24 lg:py-40 relative">
@@ -434,8 +468,12 @@ const LandingPage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="glass-card rounded-3xl p-8 relative"
+              className="glass-card rounded-3xl p-8 relative overflow-hidden"
             >
+              {/* Image background decoration */}
+              <div className="absolute top-0 right-0 w-64 h-64 -translate-y-1/2 translate-x-1/2 opacity-20 pointer-events-none">
+                <img src={analytics3d} alt="" className="w-full h-full object-contain animate-pulse" />
+              </div>
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <p className="text-xs font-mono text-gray-500 tracking-widest uppercase">Spending Overview</p>
@@ -515,8 +553,9 @@ const LandingPage = () => {
               {/* Shield visual */}
               <div className="glass-card rounded-3xl p-8">
                 <div className="flex items-center space-x-4 mb-8">
-                  <div className="w-16 h-16 rounded-2xl bg-green-400/10 flex items-center justify-center">
-                    <ShieldCheck className="w-9 h-9 text-green-400" />
+                  <div className="w-16 h-16 rounded-2xl bg-green-400/10 flex items-center justify-center relative overflow-hidden">
+                    <img src={security3d} alt="" className="absolute inset-0 w-full h-full object-cover opacity-40 scale-150 animate-spin-slow" />
+                    <ShieldCheck className="w-9 h-9 text-green-400 relative z-10" />
                   </div>
                   <div>
                     <p className="text-lg font-black text-white">Security Score</p>
