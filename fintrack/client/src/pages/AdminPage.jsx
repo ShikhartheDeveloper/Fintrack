@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { getAdminStatsApi } from '../api/adminApi';
 import StatCard from '../components/ui/StatCard';
 import Card from '../components/ui/Card';
-import { Users, Receipt, DollarSign } from 'lucide-react';
+import Button from '../components/ui/Button';
+import { Users, Receipt, DollarSign, Download } from 'lucide-react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { categoryColors } from '../utils/categoryColors';
@@ -43,6 +44,34 @@ const AdminPage = () => {
     }
 
     const { totalUsers, totalTransactions, platformSpend, categoryStats, userStats } = stats;
+
+    const exportToExcel = () => {
+        if (!userStats) return;
+        
+        const headers = ['Name', 'Email', 'Role', 'Total Income', 'Total Spent', 'Monthly Budget', 'Net Savings'];
+        const csvContent = [
+            headers.join(','),
+            ...userStats.map(u => [
+                `"${u.name}"`,
+                `"${u.email}"`,
+                `"${u.role}"`,
+                u.totalIncome,
+                u.totalExpense,
+                u.monthlyBudget || 0,
+                u.savings
+            ].join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'users_data.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     
     // Category Chart Data
     const labels = categoryStats.map(c => c._id);
@@ -136,7 +165,13 @@ const AdminPage = () => {
             </div>
 
             <Card className="mt-8">
-                <h3 className="text-lg font-semibold text-white mb-6">Users Overview & Net Savings</h3>
+                <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-lg font-semibold text-white">Users Overview & Net Savings</h3>
+                    <Button onClick={exportToExcel} variant="primary" className="flex items-center gap-2 text-sm bg-emerald-600 hover:bg-emerald-500">
+                        <Download className="w-4 h-4" />
+                        Export to Excel
+                    </Button>
+                </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -145,6 +180,7 @@ const AdminPage = () => {
                                 <th className="pb-4 font-medium px-4">Role</th>
                                 <th className="pb-4 font-medium px-4 text-emerald-400">Total Income</th>
                                 <th className="pb-4 font-medium px-4 text-red-400">Total Spent</th>
+                                <th className="pb-4 font-medium px-4 text-indigo-400">Monthly Budget</th>
                                 <th className="pb-4 font-medium px-4 text-white">Net Savings</th>
                             </tr>
                         </thead>
@@ -162,6 +198,7 @@ const AdminPage = () => {
                                     </td>
                                     <td className="py-4 px-4 font-mono text-emerald-400">₹{u.totalIncome.toLocaleString()}</td>
                                     <td className="py-4 px-4 font-mono text-red-400">₹{u.totalExpense.toLocaleString()}</td>
+                                    <td className="py-4 px-4 font-mono text-indigo-400">₹{u.monthlyBudget ? u.monthlyBudget.toLocaleString() : 'Not Set'}</td>
                                     <td className="py-4 px-4 font-mono font-bold text-white">₹{u.savings.toLocaleString()}</td>
                                 </tr>
                             ))}

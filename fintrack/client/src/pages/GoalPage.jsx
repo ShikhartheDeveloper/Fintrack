@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setGoal, updateSpend } from '../features/goal/goalSlice';
+import { updateBudgetGoal, updateSpend } from '../features/goal/goalSlice';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { Target, TrendingDown, AlertCircle } from 'lucide-react';
 
 const GoalPage = () => {
     const dispatch = useDispatch();
-    const { budgetGoal, currentSpend, progressPercent } = useSelector(state => state.goal);
+    const { budgetGoal, currentSpend, progressPercent, loading } = useSelector(state => state.goal);
     const { entries } = useSelector(state => state.transactions);
     
     const [goalInput, setGoalInput] = useState(budgetGoal || '');
@@ -30,7 +30,7 @@ const GoalPage = () => {
 
     const handleSetGoal = (e) => {
         e.preventDefault();
-        dispatch(setGoal(Number(goalInput)));
+        dispatch(updateBudgetGoal(Number(goalInput)));
     };
 
     const isOverBudget = currentSpend > budgetGoal && budgetGoal > 0;
@@ -72,8 +72,8 @@ const GoalPage = () => {
                                 />
                             </div>
                         </div>
-                        <Button type="submit" variant="primary" className="w-full">
-                            Save Goal
+                        <Button type="submit" variant="primary" className="w-full" disabled={loading}>
+                            {loading ? 'Saving...' : 'Save Goal'}
                         </Button>
                     </form>
                 </Card>

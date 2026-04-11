@@ -26,6 +26,7 @@ export const registerUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                monthlyBudget: user.monthlyBudget,
                 token: generateToken(user._id),
             });
         } else {
@@ -51,10 +52,37 @@ export const loginUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                monthlyBudget: user.monthlyBudget,
                 token: generateToken(user._id),
             });
         } else {
             res.status(401).json({ message: 'Invalid email or password' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Update user budget
+// @route   PUT /api/auth/budget
+// @access  Private
+export const updateBudget = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+
+        if (user) {
+            user.monthlyBudget = req.body.budget !== undefined ? req.body.budget : user.monthlyBudget;
+            
+            const updatedUser = await user.save();
+            res.json({
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                monthlyBudget: updatedUser.monthlyBudget,
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });

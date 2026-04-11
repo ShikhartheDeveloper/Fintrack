@@ -40,7 +40,7 @@ export const getAdminStats = async (req, res) => {
         ]);
 
         // Merge with user names
-        const users = await User.find({}, 'name email role');
+        const users = await User.find({}, 'name email role monthlyBudget');
         const userStats = users.map(user => {
             const stats = userStatsRaw.find(s => s._id.toString() === user._id.toString()) || { totalIncome: 0, totalExpense: 0 };
             return {
@@ -48,6 +48,7 @@ export const getAdminStats = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
+                monthlyBudget: user.monthlyBudget,
                 ...stats,
                 savings: stats.totalIncome - stats.totalExpense
             };

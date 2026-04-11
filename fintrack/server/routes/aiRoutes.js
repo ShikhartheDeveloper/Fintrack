@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAdviceFromClaude } from '../services/aiService.js';
+import { getAdviceFromAI } from '../services/aiService.js';
 import { verifyToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -9,12 +9,12 @@ const router = express.Router();
 // @access  Private
 router.post('/advice', verifyToken, async (req, res) => {
     try {
-        const { categories } = req.body;
+        const { categories, income, expense, balance, context } = req.body;
         if (!categories || !categories.length) {
             return res.status(400).json({ message: 'Categories are required' });
         }
         
-        const advice = await getAdviceFromClaude(categories);
+        const advice = await getAdviceFromAI({ categories, income, expense, balance, context });
         res.json({ advice });
     } catch (error) {
         res.status(500).json({ message: error.message });

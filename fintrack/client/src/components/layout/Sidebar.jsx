@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { LayoutDashboard, Receipt, Target, ShieldUser, LogOut } from 'lucide-react';
-import { logout } from '../../features/auth/authSlice';
+import { logoutUser } from '../../features/auth/authSlice';
 
 const Sidebar = () => {
     const location = useLocation();
@@ -51,7 +51,7 @@ const Sidebar = () => {
 
             <div className="p-4 border-t border-border">
                 <button
-                    onClick={() => dispatch(logout())}
+                    onClick={() => dispatch(logoutUser())}
                     className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:text-red-400 hover:bg-red-500/10 transition duration-200"
                 >
                     <LogOut className="w-5 h-5" />

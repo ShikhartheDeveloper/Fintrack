@@ -1,0 +1,8 @@
+{
+  "model": "deepseek-ai/deepseek-v3.1-terminus",
+  "messages": [{"role": "user", "content": "Hello"}],
+  "temperature": 0.2,
+  "top_p": 0.7,
+  "max_tokens": 100,
+  "stream": false
+}
