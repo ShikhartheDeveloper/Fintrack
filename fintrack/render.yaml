@@ -1,14 +1,13 @@
 services:
   - type: web
-    name: fintrack-api
+    name: fintrack
     env: node
     plan: free
-    rootDir: server
-    buildCommand: npm install
+    buildCommand: npm run build
     startCommand: npm start
     envVars:
       - key: PORT
-        value: 5000
+        value: 10000
       - key: NODE_ENV
         value: production
       - key: MONGO_URI
@@ -17,18 +16,7 @@ services:
         sync: false
       - key: JWT_EXPIRES_IN
         value: 7d
-      - key: ANTHROPIC_API_KEY
+      - key: NVIDIA_API_KEY
         sync: false
       - key: CLIENT_URL
-        value: http://localhost:5173 # This will need to be updated after the client is deployed
-
-  - type: web
-    name: fintrack-frontend
-    env: static
-    plan: free
-    rootDir: client
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_BASE_URL
-        value: http://localhost:5000/api # This will need to be updated after the API is deployed
+        value: https://fintrack-v8ls.onrender.com

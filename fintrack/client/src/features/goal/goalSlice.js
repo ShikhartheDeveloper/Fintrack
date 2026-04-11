@@ -21,7 +21,10 @@ export const updateBudgetGoal = createAsyncThunk(
             const data = await updateBudgetApi(budget);
             return data.monthlyBudget;
         } catch (error) {
-            return thunkAPI.rejectWithValue('Failed to update budget goal');
+            const message = error.response && error.response.data && error.response.data.message
+                ? error.response.data.message
+                : error.message;
+            return thunkAPI.rejectWithValue(message);
         }
     }
 );

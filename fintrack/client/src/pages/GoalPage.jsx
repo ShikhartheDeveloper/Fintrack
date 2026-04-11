@@ -7,10 +7,16 @@ import { Target, TrendingDown, AlertCircle } from 'lucide-react';
 
 const GoalPage = () => {
     const dispatch = useDispatch();
-    const { budgetGoal, currentSpend, progressPercent, loading } = useSelector(state => state.goal);
+    const { budgetGoal, currentSpend, progressPercent, loading, error } = useSelector(state => state.goal);
     const { entries } = useSelector(state => state.transactions);
     
     const [goalInput, setGoalInput] = useState(budgetGoal || '');
+
+    useEffect(() => {
+        if (error) {
+            alert(error);
+        }
+    }, [error]);
 
     useEffect(() => {
         // Calculate this month's expenses

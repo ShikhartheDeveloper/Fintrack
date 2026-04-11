@@ -30,6 +30,7 @@ const DashboardPage = () => {
     const [customIncome, setCustomIncome] = useState('');
     const [customExpense, setCustomExpense] = useState('');
     const [additionalContext, setAdditionalContext] = useState('');
+    const [investmentRatio, setInvestmentRatio] = useState(0.8);
 
     useEffect(() => {
         dispatch(fetchTransactions());
@@ -154,10 +155,12 @@ const DashboardPage = () => {
 
             // 2. Create the Transaction (Investment)
             const balanceToPass = (customIncome ? Number(customIncome) : totalIncome) - (customExpense ? Number(customExpense) : totalExpense);
-            if (balanceToPass > 0) {
+            const investmentAmount = Math.floor(balanceToPass * investmentRatio);
+            
+            if (investmentAmount > 0) {
                 await dispatch(addTransaction({
-                    text: 'Mutual Fund Investment (AI Guided)',
-                    amount: balanceToPass,
+                    text: `Mutual Fund Investment (${Math.round(investmentRatio * 100)}% of Surplus)`,
+                    amount: investmentAmount,
                     type: 'expense',
                     category: 'Investment',
                     date: new Date().toISOString()
@@ -302,6 +305,30 @@ const DashboardPage = () => {
                                     )
                                 })}
                             </div>
+                            
+                            <div className="mb-6 bg-[#0F0F1A] p-4 rounded-xl border border-[#2D2D4A]">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Investment Allocation</span>
+                                    <span className="text-sm font-bold text-white">{Math.round(investmentRatio * 100)}%</span>
+                                </div>
+                                <input 
+                                    type="range" 
+                                    min="0.1" 
+                                    max="1" 
+                                    step="0.1" 
+                                    value={investmentRatio} 
+                                    onChange={(e) => setInvestmentRatio(parseFloat(e.target.value))}
+                                    className="w-full h-1.5 bg-[#2D2D4A] rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                                />
+                                <div className="flex justify-between mt-2">
+                                    <span className="text-[10px] text-gray-500">More Liquid Cash</span>
+                                    <span className="text-[10px] text-gray-500">Max Growth</span>
+                                </div>
+                                <p className="text-[11px] text-gray-400 mt-3 italic text-center">
+                                    Investing ₹{Math.floor(((customIncome ? Number(customIncome) : totalIncome) - (customExpense ? Number(customExpense) : totalExpense)) * investmentRatio).toLocaleString()} of your ₹{((customIncome ? Number(customIncome) : totalIncome) - (customExpense ? Number(customExpense) : totalExpense)).toLocaleString()} surplus.
+                                </p>
+                            </div>
+
                             <div className="flex gap-3">
                                 <Button onClick={handleGetAdvice} variant="ghost" className="flex-1 text-sm bg-[#2D2D4A] hover:bg-gray-700" disabled={aiLoading}>
                                     {aiLoading ? 'Analyzing...' : 'Refresh Advice'}
