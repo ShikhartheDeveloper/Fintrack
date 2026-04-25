@@ -59,9 +59,56 @@ const LandingPage = () => {
                     </Link>
                 </div>
             </nav>
+ 
++            {/* Hero Section */}
++            <section className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-16">
++                <div className="text-center space-y-8">
++                    <motion.div 
++                        initial={{ opacity: 0, y: 20 }}
++                        animate={{ opacity: 1, y: 0 }}
++                        className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20"
++                    >
++                        <Sparkles className="w-3.5 h-3.5 text-primary" />
++                        <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Quantum Ecosystem v8.0</span>
++                    </motion.div>
++                    
++                    <motion.h1 
++                        initial={{ opacity: 0, y: 20 }}
++                        animate={{ opacity: 1, y: 0 }}
++                        transition={{ delay: 0.1 }}
++                        className="text-6xl md:text-9xl font-black text-white font-digital leading-[0.8] tracking-tighter"
++                    >
++                        WEALTH <br />
++                        <span className="holographic-text">ARCHITECT</span>
++                    </motion.h1>
++                    
++                    <motion.p 
++                        initial={{ opacity: 0, y: 20 }}
++                        animate={{ opacity: 1, y: 0 }}
++                        transition={{ delay: 0.2 }}
++                        className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium"
++                    >
++                        The premier neural intelligence interface for asset optimization and predictive financial trajectory mapping. Designed for the 2057 economy.
++                    </motion.p>
++
++                    <motion.div 
++                        initial={{ opacity: 0, scale: 0.9 }}
++                        animate={{ opacity: 1, scale: 1 }}
++                        transition={{ delay: 0.3 }}
++                        className="flex flex-col sm:flex-row gap-4 justify-center pt-8"
++                    >
++                        <Link to="/register">
++                            <Button className="!px-12 !py-5 text-sm font-black uppercase tracking-widest shadow-neon">Initialize Protocol</Button>
++                        </Link>
++                        <Link to="/login">
++                            <Button variant="ghost" className="!px-12 !py-5 text-sm font-black uppercase tracking-widest">Connect ID</Button>
++                        </Link>
++                    </motion.div>
++                </div>
++            </section>
 
-            {/* Hero Section */}
-            <section className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-32">
+            {/* Intelligence Section */}
+            <section id="intelligence" className="relative z-10 max-w-7xl mx-auto px-6 py-24 scroll-mt-24 border-b border-white/5">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     <motion.div 
                         variants={containerVariants}
@@ -71,156 +118,129 @@ const LandingPage = () => {
                         className="space-y-8"
                     >
                         <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-                            <Sparkles className="w-3.5 h-3.5 text-primary" />
-                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Neural Engine v4.0 Active</span>
+                            <Brain className="w-3.5 h-3.5 text-primary" />
+                            <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Neural Intelligence Active</span>
                         </motion.div>
                         
-                        <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-black text-white font-digital leading-[0.9] tracking-tighter">
-                            THE FUTURE OF <br />
-                            <span className="holographic-text">QUANTUM WEALTH</span>
-                        </motion.h1>
+                        <motion.h2 variants={itemVariants} className="text-5xl md:text-7xl font-black text-white font-digital leading-none tracking-tighter">
+                            COGNITIVE <br />
+                            <span className="text-primary italic">FINANCIAL ENGINE</span>
+                        </motion.h2>
                         
-                        <motion.p variants={itemVariants} className="text-gray-400 text-lg md:text-xl max-w-lg leading-relaxed font-medium">
-                            Experience the next evolution of financial management. Real-time cognitive tracking, predictive burn analysis, and neural roadmap archiving.
+                        <motion.p variants={itemVariants} className="text-gray-400 text-lg leading-relaxed font-medium">
+                            Our proprietary neural engine identifies patterns in your spending that humans overlook. Using advanced deep-learning protocols, FinTrack predicts future cash flow with 98.4% accuracy, allowing you to intercept financial friction before it manifests.
                         </motion.p>
-                        
-                        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 pt-4">
-                            <Link to="/register">
-                                <Button className="!px-10 !py-4 text-sm font-black uppercase tracking-widest shadow-neon">Initialize Protocol</Button>
-                            </Link>
-                            <Link to="/login">
-                                <Button variant="ghost" className="!px-10 !py-4 text-sm font-black uppercase tracking-widest">View Capabilities</Button>
-                            </Link>
-                        </motion.div>
 
-                        <motion.div variants={itemVariants} className="flex items-center gap-8 pt-8 opacity-50">
-                            <div className="text-center">
-                                <p className="text-white font-black text-2xl font-digital">99.9%</p>
-                                <p className="text-[8px] text-gray-500 font-bold uppercase tracking-widest mt-1">Uptime</p>
+                        <div className="grid grid-cols-2 gap-6 pt-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                            <div className="space-y-2">
+                                <CheckCircle className="w-4 h-4 text-primary" />
+                                <p>Real-time Pattern Recognition</p>
                             </div>
-                            <div className="w-[1px] h-10 bg-white/10" />
-                            <div className="text-center">
-                                <p className="text-white font-black text-2xl font-digital">256-BIT</p>
-                                <p className="text-[8px] text-gray-500 font-bold uppercase tracking-widest mt-1">Encryption</p>
+                            <div className="space-y-2">
+                                <CheckCircle className="w-4 h-4 text-primary" />
+                                <p>Automated Macro-Strategy</p>
                             </div>
-                            <div className="w-[1px] h-10 bg-white/10" />
-                            <div className="text-center">
-                                <p className="text-white font-black text-2xl font-digital">100K+</p>
-                                <p className="text-[8px] text-gray-500 font-bold uppercase tracking-widest mt-1">Nodes</p>
-                            </div>
-                        </motion.div>
+                        </div>
                     </motion.div>
 
                     <motion.div 
-                        initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
-                        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="relative hidden lg:block"
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        className="relative p-1 bg-gradient-to-br from-primary/30 to-transparent rounded-3xl"
                     >
-                        {/* Abstract Hero Image / SVG */}
-                        <div className="relative z-10 w-full aspect-square bg-gradient-to-br from-primary/20 to-surface border border-white/10 rounded-3xl overflow-hidden group shadow-[0_0_100px_rgba(99,102,241,0.1)]">
-                            <div className="absolute inset-0 bg-mesh opacity-50 animate-blob" />
-                            <div className="absolute inset-x-0 top-0 h-1 bg-primary/40 animate-scan" />
-                            
-                            {/* Mock Dashboard Element */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[70%] bg-[#0F0F1A]/80 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 flex flex-col gap-6 shadow-2xl">
-                                <div className="flex justify-between items-center">
-                                    <div className="flex gap-2">
-                                        <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                                        <div className="w-3 h-3 rounded-full bg-amber-500/50" />
-                                        <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
-                                    </div>
-                                    <div className="h-4 w-24 bg-white/5 rounded-full" />
-                                </div>
-                                <div className="space-y-4">
-                                    <div className="h-8 w-full bg-primary/10 rounded-lg animate-pulse" />
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="h-20 bg-white/5 rounded-lg border border-white/5" />
-                                        <div className="h-20 bg-white/5 rounded-lg border border-white/5" />
-                                    </div>
-                                    <div className="flex-1 h-32 bg-white/[0.02] border border-white/5 rounded-lg overflow-hidden relative">
-                                        <div className="absolute bottom-0 left-0 w-full h-[60%] bg-primary/20" style={{ clipPath: 'polygon(0 100%, 0 30%, 20% 50%, 40% 10%, 60% 40%, 80% 20%, 100% 40%, 100% 100%)' }} />
-                                    </div>
-                                </div>
+                        <div className="bg-surface rounded-[22px] p-8 border border-white/5 space-y-6">
+                            <div className="flex justify-between items-center pb-4 border-b border-white/5">
+                                <span className="text-xs font-black text-white font-digital tracking-widest uppercase">Intelligence Stream</span>
+                                <span className="flex items-center gap-2 text-[10px] text-primary animate-pulse">● LIVE SYNC</span>
                             </div>
-                            
-                            {/* Floating Stats */}
-                            <motion.div 
-                                animate={{ y: [0, -20, 0] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -top-10 -right-10 p-4 bg-surface border border-primary/40 rounded-2xl shadow-neon z-20"
-                            >
-                                <Zap className="w-6 h-6 text-primary mb-2" />
-                                <p className="text-[10px] font-black text-primary uppercase">Revenue Influx</p>
-                                <p className="text-xl font-digital text-white">+84.2%</p>
-                            </motion.div>
+                            <div className="space-y-4">
+                                {[85, 62, 45].map((w, i) => (
+                                    <div key={i} className="h-10 bg-white/5 rounded-xl flex items-center px-4 justify-between">
+                                        <div className="h-2 bg-primary/30 rounded-full" style={{ width: `${w}%` }} />
+                                        <span className="text-[10px] font-digital text-white/50">{w}.2% Match</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        
-                        {/* Background Rings */}
-                        <div className="absolute -inset-20 border border-primary/5 rounded-full animate-spin-slow" />
-                        <div className="absolute -inset-40 border border-purple-500/5 rounded-full animate-spin-slow [animation-direction:reverse]" />
                     </motion.div>
                 </div>
             </section>
 
-            {/* Feature Section */}
-            <section className="relative z-10 py-32 px-6 bg-surface/30 border-y border-white/5">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-20 space-y-4">
-                        <h2 className="text-[10px] font-black text-primary uppercase tracking-[0.5em]">Command & Control</h2>
-                        <h3 className="text-4xl font-black text-white font-digital tracking-tight">PLATFORM CAPABILITIES</h3>
+            {/* Security Section */}
+            <section id="security" className="relative z-10 py-32 px-6 bg-[#0B0B14] scroll-mt-24">
+                <div className="max-w-7xl mx-auto text-center space-y-8 mb-20">
+                    <div className="inline-block p-4 bg-primary/20 rounded-3xl mb-4">
+                        <Lock className="w-10 h-10 text-primary" />
                     </div>
+                    <h2 className="text-5xl font-black text-white font-digital tracking-tight">SECURITY PROTOCOLS</h2>
+                    <p className="text-gray-500 max-w-2xl mx-auto text-lg">
+                        FinTrack operates on a Zero-Knowledge architecture. Every byte of data is encrypted with 512-bit quantum-resistant algorithms before it leaves your local node.
+                    </p>
+                </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {[
-                            { icon: Brain, title: "Cognitive AI", desc: "Neural forecasting using NVIDIA DeepSeek NIM protocols for maximum precision." },
-                            { icon: Shield, title: "Quantum Lock", desc: "Military-grade encryption for every byte of your financial sequence." },
-                            { icon: Layers, title: "Flow Mapping", desc: "Deep sector breakdown of your revenue and burn rate streams." },
-                            { icon: Globe, title: "Universal Sync", desc: "Connect your entire financial ecosystem through a single neural link." },
-                        ].map((feature, i) => (
-                            <motion.div 
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="p-8 bg-surface border border-white/5 rounded-3xl hover:border-primary/30 transition-all group"
-                            >
-                                <div className="p-3 bg-white/5 rounded-2xl w-fit group-hover:bg-primary/20 group-hover:scale-110 transition-all mb-6">
-                                    <feature.icon className="w-6 h-6 text-primary" />
+                <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    {[
+                        { title: "End-to-End Vault", desc: "Military-grade AES-512 encryption levels for every transaction entry." },
+                        { title: "Hardware-Locked", desc: "Optional biometric multi-factor authentication for high-value vault actions." },
+                        { title: "Privacy First", desc: "No data reselling. Your financial map is visible only to your neural link." }
+                    ].map((s, i) => (
+                        <div key={i} className="p-10 bg-surface/50 border border-white/5 rounded-[2rem] hover:border-primary/50 transition-all group">
+                            <h4 className="text-xl font-black text-white font-digital mb-4 uppercase">{s.title}</h4>
+                            <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* Protocols Section */}
+            <section id="protocols" className="relative z-10 py-32 px-6 border-t border-white/5 scroll-mt-24">
+                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+                    <div className="order-2 lg:order-1 relative aspect-video bg-surface rounded-3xl border border-white/5 overflow-hidden">
+                        <div className="absolute inset-0 futuristic-grid opacity-20" />
+                        <div className="absolute inset-10 flex flex-col justify-end">
+                            <div className="p-6 bg-[#0A0A12]/80 backdrop-blur-md rounded-2xl border border-white/10 space-y-4">
+                                <h5 className="text-[10px] font-black text-primary uppercase">Protocol Execution View</h5>
+                                <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <motion.div initial={{ width: 0 }} whileInView={{ width: '70%' }} className="h-full bg-primary" />
                                 </div>
-                                <h4 className="text-lg font-black text-white font-digital mb-2 tracking-tight uppercase">{feature.title}</h4>
-                                <p className="text-gray-500 text-sm leading-relaxed font-medium">{feature.desc}</p>
-                            </motion.div>
+                                <div className="flex justify-between text-[8px] font-bold text-gray-500 uppercase">
+                                    <span>Optimization</span>
+                                    <span>70% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="order-1 lg:order-2 space-y-8">
+                        <h2 className="text-5xl font-black text-white font-digital leading-none tracking-tighter">FINANCIAL <br /> <span className="holographic-text">PROTOCOLS</span></h2>
+                        <p className="text-gray-400 text-lg leading-relaxed font-medium">
+                            Standard banking is reactive. FinTrack Protocols are proactive. Define automated goals, set 'Wealth Guard' limits, and establish neural roadmap archiving to visualize your 10-year financial trajectory.
+                        </p>
+                        <div className="space-y-4">
+                            {['Neural Roadmap Archiing', 'Predictive Burn Analysis', 'Automated Wealth Guard'].map((p, i) => (
+                                <div key={i} className="flex items-center gap-4 text-white font-black font-digital text-sm tracking-widest uppercase">
+                                    <span className="w-8 h-[1px] bg-primary" /> {p}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Network Section */}
+            <section id="network" className="relative z-10 py-32 px-6 bg-gradient-to-b from-transparent to-primary/5 scroll-mt-24">
+                <div className="max-w-7xl mx-auto text-center space-y-8">
+                    <Globe className="w-16 h-16 text-primary mx-auto opacity-50" />
+                    <h2 className="text-5xl font-black text-white font-digital tracking-tight">GLOBAL NETWORK</h2>
+                    <p className="text-gray-500 max-w-2xl mx-auto text-lg mb-12">
+                        FinTrack is more than an app; it's a global infrastructure syncing across 100K+ nodes. Join a community of pioneers who have already established their financial sequence in the 2057 ecosystem.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-4">
+                        {['Node Status: Active', 'Protocols Syncing: 100%', 'Regional Coverage: Global'].map((stat, i) => (
+                            <span key={i} className="px-6 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] font-black text-gray-400 uppercase tracking-widest">{stat}</span>
                         ))}
                     </div>
                 </div>
             </section>
-
-            {/* CTA Section */}
-            <section className="relative z-10 py-32 px-6">
-                <div className="max-w-5xl mx-auto p-12 bg-gradient-to-br from-indigo-600 to-primary rounded-[3rem] overflow-hidden relative group text-center shadow-[0_0_100px_rgba(99,102,241,0.2)]">
-                    <div className="absolute inset-0 bg-mesh opacity-20 animate-blob" />
-                    <div className="relative z-10 space-y-8">
-                        <h3 className="text-4xl md:text-6xl font-black text-white font-digital tracking-tighter leading-none uppercase">
-                            READY TO INHERIT <br /> THE FUTURE?
-                        </h3>
-                        <p className="text-white/80 text-lg max-w-lg mx-auto font-medium">
-                            Join 10,000+ pioneers managing their digital assets with quantum precision.
-                        </p>
-                        <div className="pt-6">
-                            <Link to="/register">
-                                <Button className="!bg-white !text-primary !px-12 !py-5 text-lg font-black uppercase tracking-widest hover:!scale-105 transition-transform shadow-2xl">
-                                    ESTABLISH LINK <ChevronRight className="w-5 h-5" />
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Footer */}
-            <footer className="relative z-10 py-12 px-6 text-center border-t border-white/5">
                 <div className="flex items-center justify-center gap-2 opacity-50 mb-6">
                     <Cpu className="w-4 h-4 text-white" />
                     <span className="text-sm font-black text-white font-digital tracking-tighter uppercase">FinTrack Neural Network</span>
