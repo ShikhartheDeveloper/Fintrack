@@ -60,52 +60,52 @@ const LandingPage = () => {
                 </div>
             </nav>
  
-+            {/* Hero Section */}
-+            <section className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-16">
-+                <div className="text-center space-y-8">
-+                    <motion.div 
-+                        initial={{ opacity: 0, y: 20 }}
-+                        animate={{ opacity: 1, y: 0 }}
-+                        className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20"
-+                    >
-+                        <Sparkles className="w-3.5 h-3.5 text-primary" />
-+                        <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Quantum Ecosystem v8.0</span>
-+                    </motion.div>
-+                    
-+                    <motion.h1 
-+                        initial={{ opacity: 0, y: 20 }}
-+                        animate={{ opacity: 1, y: 0 }}
-+                        transition={{ delay: 0.1 }}
-+                        className="text-6xl md:text-9xl font-black text-white font-digital leading-[0.8] tracking-tighter"
-+                    >
-+                        WEALTH <br />
-+                        <span className="holographic-text">ARCHITECT</span>
-+                    </motion.h1>
-+                    
-+                    <motion.p 
-+                        initial={{ opacity: 0, y: 20 }}
-+                        animate={{ opacity: 1, y: 0 }}
-+                        transition={{ delay: 0.2 }}
-+                        className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium"
-+                    >
-+                        The premier neural intelligence interface for asset optimization and predictive financial trajectory mapping. Designed for the 2057 economy.
-+                    </motion.p>
-+
-+                    <motion.div 
-+                        initial={{ opacity: 0, scale: 0.9 }}
-+                        animate={{ opacity: 1, scale: 1 }}
-+                        transition={{ delay: 0.3 }}
-+                        className="flex flex-col sm:flex-row gap-4 justify-center pt-8"
-+                    >
-+                        <Link to="/register">
-+                            <Button className="!px-12 !py-5 text-sm font-black uppercase tracking-widest shadow-neon">Initialize Protocol</Button>
-+                        </Link>
-+                        <Link to="/login">
-+                            <Button variant="ghost" className="!px-12 !py-5 text-sm font-black uppercase tracking-widest">Connect ID</Button>
-+                        </Link>
-+                    </motion.div>
-+                </div>
-+            </section>
+            {/* Hero Section */}
+            <section className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-16">
+                <div className="text-center space-y-8">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full border border-primary/20"
+                    >
+                        <Sparkles className="w-3.5 h-3.5 text-primary" />
+                        <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Quantum Ecosystem v8.0</span>
+                    </motion.div>
+                    
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-6xl md:text-9xl font-black text-white font-digital leading-[0.8] tracking-tighter"
+                    >
+                        WEALTH <br />
+                        <span className="holographic-text">ARCHITECT</span>
+                    </motion.h1>
+                    
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium"
+                    >
+                        The premier neural intelligence interface for asset optimization and predictive financial trajectory mapping. Designed for the 2057 economy.
+                    </motion.p>
+
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex flex-col sm:flex-row gap-4 justify-center pt-8"
+                    >
+                        <Link to="/register">
+                            <Button className="!px-12 !py-5 text-sm font-black uppercase tracking-widest shadow-neon">Initialize Protocol</Button>
+                        </Link>
+                        <Link to="/login">
+                            <Button variant="ghost" className="!px-12 !py-5 text-sm font-black uppercase tracking-widest">Connect ID</Button>
+                        </Link>
+                    </motion.div>
+                </div>
+            </section>
 
             {/* Intelligence Section */}
             <section id="intelligence" className="relative z-10 max-w-7xl mx-auto px-6 py-24 scroll-mt-24 border-b border-white/5">
@@ -241,6 +241,7 @@ const LandingPage = () => {
                     </div>
                 </div>
             </section>
+            <footer className="relative z-10 py-12 px-6 border-t border-white/5 text-center">
                 <div className="flex items-center justify-center gap-2 opacity-50 mb-6">
                     <Cpu className="w-4 h-4 text-white" />
                     <span className="text-sm font-black text-white font-digital tracking-tighter uppercase">FinTrack Neural Network</span>
