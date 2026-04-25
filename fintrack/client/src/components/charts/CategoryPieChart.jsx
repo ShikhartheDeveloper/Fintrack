@@ -6,7 +6,6 @@ import { categoryColors } from '../../utils/categoryColors';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const CategoryPieChart = ({ transactions }) => {
-    // Only calculate for expenses
     const expenses = transactions.filter(t => t.type === 'expense');
     
     const categoryTotals = expenses.reduce((acc, curr) => {
@@ -24,10 +23,12 @@ const CategoryPieChart = ({ transactions }) => {
         datasets: [
             {
                 data: dataVals,
-                backgroundColor: bgColors.map(color => color + 'CC'),
+                backgroundColor: bgColors.map(color => color + '99'),
                 borderColor: borderColors,
-                borderWidth: 1,
-                hoverOffset: 4
+                borderWidth: 2,
+                hoverOffset: 15,
+                hoverBorderColor: '#fff',
+                hoverBorderWidth: 2,
             },
         ],
     };
@@ -43,40 +44,51 @@ const CategoryPieChart = ({ transactions }) => {
                     usePointStyle: true,
                     padding: 20,
                     font: {
-                        family: "'Space Grotesk', sans-serif"
+                        family: "'Outfit', sans-serif",
+                        size: 11,
+                        weight: '600'
                     }
                 }
             },
             tooltip: {
-                backgroundColor: '#1A1A2E',
+                backgroundColor: 'rgba(26, 26, 46, 0.95)',
                 titleColor: '#F3F4F6',
                 bodyColor: '#D1D5DB',
-                borderColor: '#2D2D4A',
+                borderColor: 'rgba(99, 102, 241, 0.4)',
                 borderWidth: 1,
                 padding: 12,
-                boxPadding: 8
+                boxPadding: 8,
+                usePointStyle: true,
+                backdropFilter: 'blur(10px)'
             }
         },
-        cutout: '70%'
+        cutout: '75%',
+        animation: {
+            animateRotate: true,
+            animateScale: true
+        }
     };
 
     if (expenses.length === 0) {
         return (
-            <div className="flex items-center justify-center h-full text-gray-500">
-                No expense data available
+            <div className="flex items-center justify-center h-full text-gray-500 font-medium italic tracking-widest animate-pulse">
+                SCANNING SYSTEM DATA...
             </div>
         );
     }
 
     return (
-        <div className="relative h-64 w-full">
+        <div className="relative h-64 w-full scanning-overlay group">
             <Doughnut data={data} options={options} />
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className="text-gray-400 text-sm">Total</span>
-                <span className="text-white font-bold text-xl">
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none group-hover:scale-110 transition-transform duration-500">
+                <span className="text-gray-500 text-[10px] uppercase font-black tracking-widest mb-1">Burn Rate</span>
+                <span className="text-white font-black text-2xl font-digital glow-indigo">
                     ₹{dataVals.reduce((a, b) => a + b, 0).toLocaleString()}
                 </span>
             </div>
+            
+            {/* Visual Scan Line Simulation */}
+            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent animate-scan z-20 pointer-events-none" />
         </div>
     );
 };

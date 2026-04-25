@@ -2,16 +2,24 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const getAdviceFromAI = async ({ categories, income, expense, balance, context }, attempt = 1) => {
-    if (!process.env.NVIDIA_API_KEY || process.env.NVIDIA_API_KEY === 'your_nvidia_api_key') {
-        return "Configure your NVIDIA API Key for real advice.\nMock Tip 1: Cook more at home.\nMock Tip 2: Take public transport.";
+    // If we're not configured, return mock tips
+    if (!process.env.NVIDIA_API_KEY && !process.env.ANTHROPIC_API_KEY) {
+        return "• Cook more at home to save on Food.\n• Use public transport for Travel.\n• Review and cancel unused Subscriptions.";
     }
 
-    const primaryModel = "deepseek-ai/deepseek-r1-distill-llama-8b";
-    const fallbackModel = "meta/llama-3.1-8b-instruct";
-    const selectedModel = attempt === 1 ? primaryModel : fallbackModel;
+    const isShortTips = context === "GIVE_SHORT_TIPS";
+    
+    // User's specific prompt requirements
+    const userPrompt = isShortTips 
+        ? `User Spending Data:
+- Top 3 Categories: ${categories.join(', ')}
+- Income: ₹${income}
+- Total Expense: ₹${expense}
+- Balance: ₹${balance}
 
-    try {
-        const prompt = `You are a financial advisor. Here is my exact context:
+Task: Respond EXACTLY like this: "I spent most on ${categories.join(', ')} this month. Give me 3 practical money-saving tips in 3 short bullet points."
+Then provide the 3 bullet points. No conversational filler.`
+        : `You are a financial advisor. Here is my exact context:
 - Salary/Income: ₹${income || 0}
 - Expense: ₹${expense || 0}
 - Remaining Balance: ₹${balance || 0}
@@ -19,24 +27,39 @@ export const getAdviceFromAI = async ({ categories, income, expense, balance, co
 ${context ? `- Additional Goals/Context: ${context}` : ''}
 
 Please provide your advice STRICTLY in the following exact format:
-ADVICE:- [3-4 high-level money saving tips contextually tailored to my situation]
-PLAN:- [Step 1, Step 2, Step 3 clear execution steps to reach my financial context goal]
-GOAL:- [A specific numerical monthly target for saving or investing based on my balance]
+ADVICE:- [3-4 high-level money saving tips]
+PLAN:- [Step 1, Step 2, Step 3 clear execution steps]
+GOAL:- [A specific numerical monthly target]`;
 
-Do not output ANY other text outside of this exact format.
-CRITICAL: You MUST use the exact headers "ADVICE:-", "PLAN:-" and "GOAL:-" or the system will fail.
-Do not use bold characters like ** in headers.
-Ensure headers are exactly ADVICE:- , PLAN:- , and GOAL:- 
-Example:
-ADVICE:- Save on gas...
-PLAN:- 1. Use public transport...
-GOAL:- ₹15,000 Monthly Save`;
+    // Attempting to use NVIDIA as primary (since the key is there)
+    // but the user mentioned Claude, so if ANTHROPIC_API_KEY is added later, it will use that.
+    const selectedModel = attempt === 1 
+        ? (process.env.ANTHROPIC_API_KEY ? "claude-3-haiku-20240307" : "deepseek-ai/deepseek-r1-distill-llama-8b")
+        : "meta/llama-3.1-8b-instruct";
 
-        console.log(`[Attempt ${attempt}] Requesting AI advice from ${selectedModel}...`);
+    try {
+        console.log(`[Attempt ${attempt}] Requesting advice using ${selectedModel}...`);
+        
+        // If it's a Claude model, we use fetch to Anthropic (simplified implementation)
+        if (selectedModel.startsWith('claude')) {
+            const response = await fetch("https://api.anthropic.com/v1/messages", {
+                method: "POST",
+                headers: {
+                    "x-api-key": process.env.ANTHROPIC_API_KEY,
+                    "anthropic-version": "2023-06-01",
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: selectedModel,
+                    max_tokens: 1024,
+                    messages: [{ role: "user", content: userPrompt }]
+                })
+            });
+            const data = await response.json();
+            return data.content[0].text;
+        }
 
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s timeout for stability
-
+        // Existing NVIDIA NIM logic
         const response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -45,22 +68,13 @@ GOAL:- ₹15,000 Monthly Save`;
             },
             body: JSON.stringify({
                 model: selectedModel,
-                messages: [{ role: "user", content: prompt }],
-                temperature: 0.2,
-                top_p: 0.7,
-                max_tokens: 1024,
-                stream: false
-            }),
-            signal: controller.signal
+                messages: [{ role: "user", content: userPrompt }],
+                temperature: 0.1,
+                max_tokens: 512
+            })
         });
 
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`API Error (${selectedModel}):`, errorText);
-            throw new Error(`API Error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`API Error: ${response.status}`);
 
         const data = await response.json();
         let content = data.choices[0].message.content || "";
@@ -68,20 +82,10 @@ GOAL:- ₹15,000 Monthly Save`;
         // Strip thinking tags if present
         content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
         
-        if (!content && attempt === 1) {
-            console.log("Empty content received, trying fallback...");
-            return getAdviceFromAI({ categories, income, expense, balance, context }, 2);
-        }
-
         return content;
     } catch (error) {
-        console.error(`Error with ${selectedModel}:`, error.message);
-        
-        if (attempt === 1) {
-            console.log("Primary model failed, attempting fallback to Llama 3...");
-            return getAdviceFromAI({ categories, income, expense, balance, context }, 2);
-        }
-        
-        throw new Error('Failed to get AI advice even after fallback: ' + error.message);
+        console.error(`AI Error (${selectedModel}):`, error.message);
+        if (attempt === 1) return getAdviceFromAI({ categories, income, expense, balance, context }, 2);
+        throw error;
     }
 };
