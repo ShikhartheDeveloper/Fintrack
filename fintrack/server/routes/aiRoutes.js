@@ -4,9 +4,6 @@ import { verifyToken } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// @desc    Get AI financial advice
-// @route   POST /api/ai/advice
-// @access  Private
 router.post('/advice', verifyToken, async (req, res) => {
     try {
         const { categories, income, expense, balance, context } = req.body;

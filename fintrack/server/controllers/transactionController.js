@@ -1,8 +1,5 @@
 import Transaction from '../models/Transaction.js';
 
-// @desc    Get user transactions
-// @route   GET /api/transactions
-// @access  Private
 export const getTransactions = async (req, res) => {
     try {
         const query = req.user.role === 'admin' ? {} : { userId: req.user._id };
@@ -15,9 +12,6 @@ export const getTransactions = async (req, res) => {
     }
 };
 
-// @desc    Create new transaction
-// @route   POST /api/transactions
-// @access  Private
 export const createTransaction = async (req, res) => {
     try {
         const { type, amount, category, note, date } = req.body;
@@ -38,9 +32,6 @@ export const createTransaction = async (req, res) => {
     }
 };
 
-// @desc    Delete transaction
-// @route   DELETE /api/transactions/:id
-// @access  Private
 export const deleteTransaction = async (req, res) => {
     try {
         const transaction = await Transaction.findById(req.params.id);
@@ -60,9 +51,6 @@ export const deleteTransaction = async (req, res) => {
     }
 };
 
-// @desc    Get monthly aggregated transactions
-// @route   GET /api/transactions/monthly
-// @access  Private
 export const getMonthlyTransactions = async (req, res) => {
     try {
         const matchQuery = req.user.role === 'admin' ? {} : { userId: req.user._id };

@@ -1,9 +1,6 @@
 import Transaction from '../models/Transaction.js';
 import User from '../models/User.js';
 
-// @desc    Get admin statistics
-// @route   GET /api/admin/stats
-// @access  Private/Admin
 export const getAdminStats = async (req, res) => {
     try {
         const totalUsers = await User.countDocuments();
@@ -24,7 +21,6 @@ export const getAdminStats = async (req, res) => {
             return acc;
         }, { income: 0, expense: 0 });
 
-        // Aggregate per-user stats
         const userStatsRaw = await Transaction.aggregate([
             {
                 $group: {
@@ -39,7 +35,6 @@ export const getAdminStats = async (req, res) => {
             }
         ]);
 
-        // Merge with user names
         const users = await User.find({}, 'name email role monthlyBudget');
         const userStats = users.map(user => {
             const stats = userStatsRaw.find(s => s._id.toString() === user._id.toString()) || { totalIncome: 0, totalExpense: 0 };

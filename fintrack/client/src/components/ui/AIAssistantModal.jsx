@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Sparkles, Bot, User, Brain, Zap, ShieldCheck } from 'lucide-react';
+import { X, Send, Sparkles, Bot, User, Brain, Zap, ShieldCheck, Target } from 'lucide-react';
 import Button from './Button';
+import { saveSuggestionApi } from '../../api/suggestionApi';
 
-const AIAssistantModal = ({ isOpen, onClose, contextData }) => {
+const AIAssistantModal = ({ isOpen, onClose, contextData, onSuggestionSaved }) => {
     const [messages, setMessages] = useState([
         { 
             role: 'assistant', 
@@ -47,6 +48,26 @@ const AIAssistantModal = ({ isOpen, onClose, contextData }) => {
             setMessages(prev => [...prev, aiMsg]);
             setIsTyping(false);
         }, 1500);
+    };
+
+    const handleSaveMessage = async (content) => {
+        try {
+            await saveSuggestionApi({
+                context: "AI Assistant Strategy",
+                income: contextData.income,
+                expense: contextData.expense,
+                suggestionText: content,
+                executionPlan: "Execution plan based on AI Assistant conversation.",
+                monthlyGoal: "See strategy text for details."
+            });
+            if (onSuggestionSaved) {
+                onSuggestionSaved();
+            }
+            alert('Strategy protocol saved to dashboard!');
+        } catch (error) {
+            console.error('Error saving suggestion:', error);
+            alert('Failed to save strategy protocol.');
+        }
     };
 
     if (!isOpen) return null;
@@ -111,7 +132,19 @@ const AIAssistantModal = ({ isOpen, onClose, contextData }) => {
                                         }`}>
                                             {msg.content}
                                         </div>
-                                        <span className="text-[10px] text-gray-500 font-bold mx-1">{msg.time}</span>
+                                        <div className="flex items-center gap-3 mx-1 mt-1">
+                                            <span className="text-[10px] text-gray-500 font-bold">{msg.time}</span>
+                                            {msg.role === 'assistant' && msg.id !== 1 && (
+                                                <button 
+                                                    onClick={() => handleSaveMessage(msg.content)}
+                                                    className="text-[10px] text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 opacity-70 hover:opacity-100 transition-all no-modal-trigger"
+                                                    title="Save Strategy"
+                                                >
+                                                    <Target className="w-3 h-3" />
+                                                    <span>Save Strategy</span>
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTransactions, fetchMonthlyData } from '../features/transactions/transactionThunks';
 import { getAiAdviceApi } from '../api/aiApi';
-import { getSuggestionsApi, deleteSuggestionApi } from '../api/suggestionApi';
+import { getSuggestionsApi, deleteSuggestionApi, saveSuggestionApi } from '../api/suggestionApi';
 import StatCard from '../components/ui/StatCard';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -12,7 +12,7 @@ import TransactionItem from '../components/transactions/TransactionItem';
 import SuggestionCard from '../components/ui/SuggestionCard';
 import Modal from '../components/ui/Modal';
 import AIAssistantModal from '../components/ui/AIAssistantModal';
-import { Wallet, TrendingUp, TrendingDown, Sparkles, Map, ListChecks, Goal, Target, Calendar, Brain, Search, Terminal, Zap, ChevronRight } from 'lucide-react';
+import { Wallet, TrendingUp, TrendingDown, Sparkles, Map, ListChecks, Goal, Target, Calendar, Brain, Search, Terminal, Zap, ChevronRight, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -25,6 +25,7 @@ const DashboardPage = () => {
     const isAdmin = role === 'admin';
     const [aiAdvice, setAiAdvice] = useState([]);
     const [aiLoading, setAiLoading] = useState(false);
+    const [isSavingAdvice, setIsSavingAdvice] = useState(false);
     const [suggestions, setSuggestions] = useState([]);
     const [selectedSuggestion, setSelectedSuggestion] = useState(null);
     const [isAssistantOpen, setIsAssistantOpen] = useState(false);
@@ -103,6 +104,28 @@ const DashboardPage = () => {
             setAiAdvice(['System synchronization error. Please retry.']);
         } finally {
             setAiLoading(false);
+        }
+    };
+
+    const handleSaveAdvice = async () => {
+        if (aiAdvice.length === 0) return;
+        setIsSavingAdvice(true);
+        try {
+            await saveSuggestionApi({
+                context: "AI Wealth Insights",
+                income: totalIncome,
+                expense: totalExpense,
+                suggestionText: aiAdvice.map(tip => `• ${tip}`).join('\n'),
+                executionPlan: "Execution plan included in advice above.",
+                monthlyGoal: "See advice for goal details."
+            });
+            loadSuggestions();
+            alert('Wealth insights protocol saved successfully!');
+        } catch (error) {
+            console.error('Error saving advice suggestion:', error);
+            alert('Failed to save strategy protocol.');
+        } finally {
+            setIsSavingAdvice(false);
         }
     };
 
@@ -264,7 +287,20 @@ const DashboardPage = () => {
                                         </motion.div>
                                     ))}
                                 </div>
-                                <div className="mt-8 flex justify-center opacity-40">
+
+                                <div className="mt-6 pt-4 border-t border-white/5 flex justify-end">
+                                    <Button
+                                        onClick={handleSaveAdvice}
+                                        disabled={isSavingAdvice}
+                                        variant="ghost"
+                                        className="text-xs py-2 px-4 bg-primary/10 border border-primary/20 hover:bg-primary/20 text-white font-black uppercase tracking-widest flex items-center gap-2"
+                                    >
+                                        <Target className="w-4 h-4 text-primary" />
+                                        {isSavingAdvice ? 'Saving...' : 'Save Strategy'}
+                                    </Button>
+                                </div>
+
+                                <div className="mt-6 flex justify-center opacity-40">
                                     <div className="flex items-center gap-2">
                                         <Zap className="w-3 h-3 text-primary" />
                                         <span className="text-[10px] font-black tracking-[0.3em] text-gray-500 uppercase">Cognitive Protocol Active</span>
@@ -354,7 +390,19 @@ const DashboardPage = () => {
                                                 <p className="text-[10px] text-gray-500 font-medium">Saved {new Date(s.createdAt).toLocaleDateString()}</p>
                                             </div>
                                         </div>
-                                        <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors" />
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleDeleteSuggestion(s._id);
+                                                }}
+                                                className="p-1.5 text-gray-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all opacity-0 group-hover:opacity-100 no-modal-trigger"
+                                                title="Delete strategy protocol"
+                                            >
+                                                <Trash2 className="w-3.5 h-3.5" />
+                                            </button>
+                                            <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors" />
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -373,6 +421,7 @@ const DashboardPage = () => {
                 isOpen={isAssistantOpen} 
                 onClose={() => setIsAssistantOpen(false)}
                 contextData={{ balance, income: totalIncome, expense: totalExpense }}
+                onSuggestionSaved={loadSuggestions}
             />
 
             <Modal 
@@ -408,6 +457,19 @@ const DashboardPage = () => {
                         <div className="p-6 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 flex items-center justify-between">
                             <span className="text-white font-black tracking-widest uppercase text-sm font-digital">Monthly Target</span>
                             <span className="text-2xl font-black text-emerald-400 font-digital">{selectedSuggestion.monthlyGoal}</span>
+                        </div>
+                        <div className="flex justify-end pt-4">
+                            <Button
+                                onClick={() => {
+                                    handleDeleteSuggestion(selectedSuggestion._id);
+                                    setSelectedSuggestion(null);
+                                }}
+                                variant="ghost"
+                                className="text-xs py-2 px-4 bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 text-red-400 font-black uppercase tracking-widest flex items-center gap-2"
+                            >
+                                <Trash2 className="w-4 h-4" />
+                                Delete Protocol
+                            </Button>
                         </div>
                     </div>
                 )}
